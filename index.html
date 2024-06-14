@@ -8,87 +8,146 @@
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h1, h2 {
-            margin-bottom: 10px;
-        }
-        code {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             background-color: #f0f0f0;
-            padding: 2px 6px;
-            border-radius: 3px;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: left;
+            overflow: hidden; /* Prevents overflow issues */
         }
         pre {
-            background-color: #f7f7f7;
-            padding: 10px;
-            border-radius: 5px;
+            background-color: #f4f4f4;
+            padding: 20px;
+            border: 1px solid #ccc;
+            white-space: pre-wrap;
             overflow-x: auto;
+            font-size: 14px;
+            color: #333;
+            border-radius: 5px;
+            max-height: 600px;
+            overflow-y: auto;
+            margin: 0;
+            scrollbar-width: thin; /* Firefox */
+            scrollbar-color: #ccc #f4f4f4; /* Firefox */
+        }
+        pre::-webkit-scrollbar {
+            width: 8px; /* Chrome/Safari/Webkit */
+        }
+        pre::-webkit-scrollbar-thumb {
+            background-color: #ccc; /* Chrome/Safari/Webkit */
+            border-radius: 4px;
+        }
+        h2 {
+            color: #007bff;
+            margin-top: 0;
+            padding-top: 10px;
+            border-top: 1px solid #ccc;
+            text-align: center;
+            padding-bottom: 10px;
+        }
+        .loading {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .nav button {
+            margin: 0 10px;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .nav button:hover {
+            background-color: #0056b3;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 4px;
+            padding: 8px 0;
+        }
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
         }
     </style>
 </head>
 <body>
-    <h1>General Additions Javascript API</h1>
-    <h1>How to Install</h1>
-    <pre><code>
-        Add to your HTML:
-           &lt;script src="https://github.com/SpeedSlicer/GeneralAdditionsJS/blob/main/api.js"&gt;&lt;/script&gt; 
-    </code></pre>
+    <div class="container">
+        <div class="nav">
+            <div class="dropdown">
+                <button class="dropbtn">Other APIs</button>
+                <div class="dropdown-content">
+                    <a href="#">Coming Soon</a>
+                    <!-- Add more pages as needed -->
+                </div>
+            </div>
+        </div>
+        
+        <h2>General Additions JS (Base)</h2>
+        <pre id="functionList" class="loading">Loading...</pre>
+    </div>
 
-    <h1>API</h1>
-    <h2>Cookie Management</h2>
-    <pre><code>setCookie(name, value, days): Sets a cookie.
-getCookie(name): Retrieves the value of a cookie.
-deleteCookie(name): Deletes a cookie.
-clearAllCookies(): Clears all cookies.</code></pre>
+    <script>
+        function displayFunctions() {
+            fetch('apis/api.js')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    const formattedData = escapeHtml(data); // Escape HTML characters
+                    document.getElementById('functionList').innerHTML = formattedData;
+                    document.getElementById('functionList').classList.remove('loading');
+                })
+                .catch(error => {
+                    console.error('Error fetching API.js:', error);
+                    document.getElementById('functionList').textContent = 'Error fetching api.js file.';
+                    document.getElementById('functionList').classList.remove('loading');
+                });
+        }
 
-    <h2>Local Storage and Session Storage</h2>
-    <pre><code>setLocalStorageWithExpiration(key, value, expirationMins): Stores data in local storage with expiration.
-getLocalStorageWithExpiration(key): Retrieves data from local storage if not expired.
-setSessionStorage(key, value): Stores data in session storage.
-getSessionStorage(key): Retrieves data from session storage.</code></pre>
+        function escapeHtml(unsafe) {
+            return unsafe.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
 
-    <h2>Date and Time</h2>
-    <pre><code>formatDate(date): Formats a date object into "YYYY-MM-DD HH:MM".
-getCurrentUTCTimestamp(): Retrieves the current UTC timestamp in milliseconds.</code></pre>
-
-    <h2>Random Data Generation</h2>
-    <pre><code>generateRandomString(length): Generates a random alphanumeric string of a specified length.
-generateUUID(): Generates a universally unique identifier (UUID).</code></pre>
-
-    <h2>Data Conversion and Manipulation</h2>
-    <pre><code>base64ToBlob(base64, contentType): Converts a base64 string to a Blob object.
-bytesToSize(bytes): Converts bytes to a human-readable file size string.</code></pre>
-
-    <h2>Utility and Validation</h2>
-    <pre><code>copyToClipboard(text): Copies a string to the clipboard.
-isValidEmail(email): Validates if a string is a valid email address.
-isValidURL(url): Validates if a string is a valid URL.</code></pre>
-
-    <h2>DOM Manipulation and Utilities</h2>
-    <pre><code>createAbout(url, title, faviconURL): Creates a new window with an iframe displaying a URL.
-scrollToTop(): Scrolls the page to the top.
-scrollToElement(selector): Scrolls the page to a specific element.</code></pre>
-
-    <h2>Browser Detection and Feature Support</h2>
-    <pre><code>isMobileDevice(): Detects if the device is a mobile device.
-isInternetExplorer(): Detects if the browser is Internet Explorer.
-supportsIntersectionObserver(): Checks if the browser supports Intersection Observer API.</code></pre>
-
-    <h2>String Manipulation</h2>
-    <pre><code>capitalizeFirstLetter(str): Capitalizes the first letter of a string.
-toTitleCase(str): Converts a string to title case.</code></pre>
-
-    <h2>Async Operations and Promises</h2>
-    <pre><code>fetchData(url, options): Fetches data from a URL using Fetch API with error handling.
-delay(ms): Returns a promise that resolves after a specified delay.</code></pre>
-
-    <h2>UI and Interface Handling</h2>
-    <pre><code>setDocumentTitle(title): Sets the title of the current document.</code></pre>
-
-    <h2>Miscellaneous</h2>
-    <pre><code>getRandomInt(min, max): Generates a random integer between specified ranges.</code></pre>
-
+        document.addEventListener('DOMContentLoaded', displayFunctions);
+    </script>
 </body>
 </html>
