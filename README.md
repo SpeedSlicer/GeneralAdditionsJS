@@ -5,5 +5,5 @@ API:
 ### How to Install:
 Add to your HTML:
 ```
- <script src="https://github.com/SpeedSlicer/GeneralAdditionsJS/blob/main/api.js"></script> 
+ <script src="https://github.com/SpeedSlicer/GeneralAdditionsJS/blob/main/apis/api.js"></script> 
 ```
