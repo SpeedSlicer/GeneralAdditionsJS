@@ -7,3 +7,5 @@ Add to your HTML:
 ```
  <script src="https://github.com/SpeedSlicer/GeneralAdditionsJS/blob/main/apis/api.js"></script> 
 ```
+API:
+https://speedslicer.github.io/GeneralAdditionsJS
